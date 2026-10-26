@@ -9,9 +9,9 @@ export const Footer: React.FC = () => {
   return (
     <footer className="w-full bg-[#050505] border-t border-[#181818] text-neutral-400 pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#181818]">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-10 pb-12 border-b border-[#181818]">
           {/* Col 1: Brand Info */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="xl:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
               <span className="w-8 h-8 rounded bg-gradient-to-br from-[#D4AF37] to-[#8C7018] text-black font-extrabold flex items-center justify-center text-base shadow">
                 G
@@ -39,7 +39,7 @@ export const Footer: React.FC = () => {
               </a>
               <span className="bg-[#121212] border border-[#222] px-2.5 py-1 rounded text-neutral-300 flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                M-Pesa Integrated
+                M-Pesa Paybill Available
               </span>
               <span className="bg-[#121212] border border-[#222] px-2.5 py-1 rounded text-neutral-300 flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#D4AF37]" />
@@ -154,15 +154,6 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <button
-                  onClick={() => setCurrentView('store')}
-                  className="hover:text-white transition-colors cursor-pointer text-left flex items-center gap-1.5 text-[#ff7b00]"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#ff7b00]" />
-                  <span>Creator Store & LUTs</span>
-                </button>
-              </li>
-              <li>
-                <button
                   onClick={() => setCurrentView('client-portal')}
                   className="hover:text-[#D4AF37] transition-colors cursor-pointer text-left font-medium"
                 >
@@ -237,7 +228,9 @@ export const Footer: React.FC = () => {
 
           <div className="flex items-center gap-3">
             <span className="text-neutral-400">Payment:</span>
-            <span className="text-white font-semibold">M-Pesa Paybill {COMPANY_INFO.mpesaPaybill}</span>
+            <span className="text-white font-semibold">
+              M-Pesa Paybill {COMPANY_INFO.mpesaPaybill} · Account {COMPANY_INFO.mpesaAccount}
+            </span>
             <span className="text-neutral-700">|</span>
             <span className="text-neutral-400">Equity Bank</span>
             <span className="text-neutral-700">|</span>

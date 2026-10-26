@@ -259,13 +259,20 @@ export const ClientPortal: React.FC = () => {
                       </p>
                     </div>
 
-                    <button
-                      onClick={() => alert(`Downloading ${del.title}...`)}
-                      className="px-4 py-2 bg-[#1b1b1b] hover:bg-[#D4AF37] text-neutral-200 hover:text-black border border-[#333] hover:border-[#D4AF37] rounded-xl text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>Download</span>
-                    </button>
+                    {del.status === 'Ready' && del.downloadUrl.trim() && del.downloadUrl !== '#' ? (
+                      <a
+                        href={del.downloadUrl}
+                        download
+                        className="px-4 py-2 bg-[#1b1b1b] hover:bg-[#D4AF37] text-neutral-200 hover:text-black border border-[#333] hover:border-[#D4AF37] rounded-xl text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download</span>
+                      </a>
+                    ) : (
+                      <span className="text-xs text-neutral-500">
+                        {del.status === 'Processing' ? 'Preparing file' : 'File not attached'}
+                      </span>
+                    )}
                   </div>
                 ))}
               </div>
@@ -331,7 +338,7 @@ export const ClientPortal: React.FC = () => {
                         className="px-4 py-2 bg-[#00A859] hover:bg-[#00924d] text-white text-xs font-bold rounded-xl transition-all shadow flex items-center gap-1.5 cursor-pointer"
                       >
                         <Smartphone className="w-3.5 h-3.5" />
-                        <span>Pay via M-Pesa</span>
+                        <span>View Manual Payment Instructions</span>
                       </button>
                     )}
                   </div>

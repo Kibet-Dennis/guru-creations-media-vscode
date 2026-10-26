@@ -105,11 +105,13 @@ export const TermsOfServicePage: React.FC = () => {
                   <ChevronDown className="w-5 h-5 text-neutral-400" />
                 )}
               </button>
-              {openSection === item.num && (
-                <div className="px-5 pb-5 text-xs sm:text-sm text-neutral-300 leading-relaxed border-t border-white/10 pt-4">
-                  {item.content}
-                </div>
-              )}
+              <div
+                className={`px-5 pb-5 text-xs sm:text-sm text-neutral-300 leading-relaxed border-t border-white/10 pt-4 ${
+                  openSection === item.num ? '' : 'hidden print:block'
+                }`}
+              >
+                {item.content}
+              </div>
             </div>
           ))}
         </div>

@@ -24,7 +24,7 @@ export const COMPANY_INFO = {
   shortName: 'Guru Creations',
   legalName: 'Guru Creations Ltd',
   founder: 'Dennis Kibet',
-  slogan: 'Capturing Moments. Creating Experiences. Delivering Excellence.',
+  slogan: 'Your Success, Our Passion.',
   tagline: 'Elevate Your Brand with Digital Excellence · Ideas that move your brand forward.',
   location: 'Nairobi, Kenya',
   fullAddress: 'Studio 4B, The Pavilion Commercial Hub, Westlands, Nairobi, Kenya',
@@ -45,8 +45,8 @@ export const COMPANY_INFO = {
   friendsChurchLiveUrl: 'https://ambroseoliver.github.io/FRIENDS-KABETE-LOCAL-CHURCH-/',
   githubOriginalUrl: 'https://kibet-dennis.github.io/guru-creations/',
   hours: 'Monday – Saturday: 8:00 AM – 8:00 PM (24/7 Event Coverage on Call)',
-  mpesaPaybill: '4098250',
-  mpesaAccount: 'GURU-CREATIONS',
+  mpesaPaybill: '247247',
+  mpesaAccount: '0700545425',
   bankName: 'Equity Bank Kenya',
   bankAccount: '0180293847291 (Westlands Supreme Branch)',
   bankSwift: 'EQBLKENA',
@@ -661,10 +661,10 @@ export const INITIAL_PROJECTS: ClientProject[] = [
     deliverables: [
       {
         id: 'del-1',
-        title: 'Run of Show & Camera Positioning Blueprint.pdf',
+        title: 'Camera Positioning Blueprint - SAMPLE DRAFT.txt',
         type: 'raw_assets',
-        size: '4.2 MB',
-        downloadUrl: '#',
+        size: '1 KB',
+        downloadUrl: '/downloads/camera-positioning-blueprint-sample.txt',
         status: 'Ready',
       },
       {
@@ -1605,4 +1605,3 @@ export const INITIAL_STORE_ORDERS: StoreOrder[] = [
     downloadAccessGranted: true,
   },
 ];
-

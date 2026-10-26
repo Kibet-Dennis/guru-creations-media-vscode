@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Calendar, Clock, MapPin, Users, Video, Camera, CheckCircle2, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Download, Share2, ShieldCheck } from 'lucide-react';
 import { Booking } from '../types';
+import { getWhatsAppUrl } from '../utils/whatsapp';
+import { COMPANY_INFO } from '../data/mockData';
 
 export const BookingPage: React.FC = () => {
   const { addBooking, setCurrentView, openMpesaModal, formatMoney } = useApp();
@@ -26,16 +28,92 @@ export const BookingPage: React.FC = () => {
   });
 
   const [submittedBooking, setSubmittedBooking] = useState<Booking | null>(null);
+  const [bookingWhatsAppUrl, setBookingWhatsAppUrl] = useState('');
+  const [bookingPdf, setBookingPdf] = useState<File | null>(null);
+  const [submissionMessage, setSubmissionMessage] = useState('');
+  const [pdfTools, setPdfTools] = useState<typeof import('../utils/bookingPdf') | null>(null);
+  const [pdfToolsError, setPdfToolsError] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    import('../utils/bookingPdf')
+      .then((tools) => {
+        if (active) setPdfTools(tools);
+      })
+      .catch((error: unknown) => {
+        console.error('Could not load the booking PDF generator.', error);
+        if (active) setPdfToolsError('The booking PDF tool could not be loaded. Please reload the page and try again.');
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const shareBookingPdf = (file: File, booking: Booking) => {
+    if (navigator.share && navigator.canShare?.({ files: [file] })) {
+      void navigator.share({
+        files: [file],
+        title: `Booking request ${booking.referenceNumber}`,
+        text: `Please send this booking request PDF to Guru Creations on WhatsApp at +${COMPANY_INFO.whatsapp}. Reference: ${booking.referenceNumber}`,
+      }).then(() => {
+        setSubmissionMessage('The share sheet closed. Confirm that you chose WhatsApp, selected Guru Creations, and sent the PDF.');
+      }).catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          setSubmissionMessage('Sharing was cancelled. Use the buttons below to download the PDF or open WhatsApp.');
+        } else {
+          console.error('Could not share the booking PDF.', error);
+          setSubmissionMessage('The share menu could not send the PDF. Download it below, then attach it in WhatsApp.');
+        }
+      });
+      return;
+    }
+
+    pdfTools?.downloadBookingPdf(file);
+    setSubmissionMessage(
+      'Your booking PDF was downloaded. WhatsApp opened with a message; attach the downloaded PDF there, then tap Send.'
+    );
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.clientName || !formData.email || !formData.phone) return;
+    if (!pdfTools || !formData.clientName || !formData.email || !formData.phone) return;
 
-    const created = addBooking({
-      ...formData,
-      totalCostKES: formData.estimatedBudgetKES,
-    });
-    setSubmittedBooking(created);
+    try {
+      const created = addBooking({
+        ...formData,
+        totalCostKES: formData.estimatedBudgetKES,
+      });
+      const pdf = pdfTools.createBookingPdf(created);
+      const whatsappUrl = getWhatsAppUrl([
+        'Hello Guru Creations, I would like to request this production booking.',
+        `Name: ${formData.clientName}`,
+        `Organization: ${formData.organization || 'Not provided'}`,
+        `Email: ${formData.email}`,
+        `Phone: ${formData.phone}`,
+        `Service: ${formData.serviceCategory}`,
+        `Event: ${formData.eventType}`,
+        `Date and time: ${formData.eventDate}, ${formData.startTime}–${formData.endTime}`,
+        `Venue: ${formData.location}`,
+        `Estimated budget: KES ${formData.estimatedBudgetKES.toLocaleString()}`,
+        `Guests: ${formData.guestCount}`,
+        `Cameras required: ${formData.camerasRequired}`,
+        `Livestream platform: ${formData.livestreamPlatform}`,
+        `Booking reference: ${created.referenceNumber}`,
+        `Requirements: ${formData.specialRequirements || 'None provided'}`,
+      ].join('\n'));
+
+      setBookingWhatsAppUrl(whatsappUrl);
+      setBookingPdf(pdf);
+      setSubmittedBooking(created);
+      shareBookingPdf(pdf, created);
+      if (!navigator.share || !navigator.canShare?.({ files: [pdf] })) {
+        window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      }
+    } catch (error) {
+      console.error('Could not prepare the booking PDF.', error);
+      setSubmissionMessage('Could not create the booking PDF. Please try submitting again.');
+    }
   };
 
   return (
@@ -50,7 +128,7 @@ export const BookingPage: React.FC = () => {
             Book Our Media Production Services
           </h1>
           <p className="text-sm text-neutral-400 max-w-xl mx-auto">
-            Fill in your production details below. Our production coordinator will review your schedule and assign technical leads within 2 hours.
+            Submit your event details to create a booking PDF. On supported phones, share it directly to WhatsApp; otherwise download the PDF and attach it to the prefilled WhatsApp message.
           </p>
         </div>
 
@@ -62,9 +140,9 @@ export const BookingPage: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-white">Booking Request Received!</h2>
+              <h2 className="text-2xl font-bold text-white">Booking Request Prepared</h2>
               <p className="text-sm text-neutral-300">
-                Your reservation has been logged into our technical production queue.
+                {submissionMessage} Your request is not received until you tap Send in WhatsApp.
               </p>
             </div>
 
@@ -95,6 +173,24 @@ export const BookingPage: React.FC = () => {
 
             {/* Next Steps Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+              {bookingPdf && (
+                <button
+                  onClick={() => pdfTools?.downloadBookingPdf(bookingPdf)}
+                  className="w-full sm:w-auto px-6 py-3 bg-[#1b1b1b] hover:bg-[#252525] text-white font-semibold text-xs rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  Download Booking PDF
+                </button>
+              )}
+              <a
+                href={bookingWhatsAppUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto px-6 py-3 bg-[#128C7E] hover:bg-[#075E54] text-white font-semibold text-xs rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
+              >
+                <Share2 className="w-4 h-4" />
+                Open WhatsApp Message Again
+              </a>
               <button
                 onClick={() =>
                   openMpesaModal({
@@ -105,7 +201,7 @@ export const BookingPage: React.FC = () => {
                 }
                 className="w-full sm:w-auto px-6 py-3 bg-[#00A859] hover:bg-[#00924d] text-white font-semibold text-xs rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
               >
-                <span>Pay 50% Deposit via M-Pesa</span>
+                <span>View Manual M-Pesa Instructions</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
@@ -379,12 +475,14 @@ export const BookingPage: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full sm:w-auto px-8 py-3.5 bg-[#D4AF37] hover:bg-[#e4be42] text-black font-bold text-xs rounded-xl transition-all shadow-lg cursor-pointer flex items-center justify-center gap-2"
+                disabled={!pdfTools}
+                className="w-full sm:w-auto px-8 py-3.5 bg-[#D4AF37] hover:bg-[#e4be42] disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold text-xs rounded-xl transition-all shadow-lg cursor-pointer flex items-center justify-center gap-2"
               >
-                <span>Submit Production Booking</span>
+                <span>{pdfTools ? 'Submit Booking & Share PDF' : 'Preparing Booking PDF...'}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
+            {pdfToolsError && <p role="alert" className="text-xs text-red-400">{pdfToolsError}</p>}
           </form>
         )}
       </div>

@@ -35,7 +35,7 @@ export const Hero: React.FC = () => {
 
             {/* Slogan & Supporting Description */}
             <p className="text-base sm:text-lg text-neutral-300 font-light leading-relaxed max-w-2xl">
-              "Capturing Moments. Creating Experiences. Delivering Excellence." Founded by Dennis Kibet, we bring authentic stories to life through aerial drone cinematography, 4K documentary filmmaking, high-fashion photography, multi-camera broadcasting, and world-class event production.
+              "Your Success, Our Passion." Founded by Dennis Kibet, we bring authentic stories to life through aerial drone cinematography, 4K documentary filmmaking, high-fashion photography, multi-camera broadcasting, and world-class event production.
             </p>
 
             {/* Primary Action Buttons */}

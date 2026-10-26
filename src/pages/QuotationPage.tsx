@@ -98,7 +98,7 @@ export const QuotationPage: React.FC = () => {
             Automated Quotation Generator
           </h1>
           <p className="text-sm text-neutral-400 max-w-xl mx-auto">
-            Configure cameras, drone flights, sound consoles, and travel. Receive an instant binding quotation calculated in Kenyan Shillings.
+            Configure cameras, drone flights, sound consoles, and travel for an indicative estimate. Confirm the final scope and price with our team.
           </p>
         </div>
 
@@ -288,7 +288,7 @@ export const QuotationPage: React.FC = () => {
               </div>
 
               <div className="text-right">
-                <p className="text-xs uppercase font-extrabold text-neutral-400">Official Quotation</p>
+                <p className="text-xs uppercase font-extrabold text-neutral-400">Indicative Estimate</p>
                 <p className="text-sm font-bold text-neutral-900 font-mono mt-0.5">{quoteNumber}</p>
                 <p className="text-[11px] text-neutral-500 mt-0.5">
                   Date: {new Date().toLocaleDateString()}

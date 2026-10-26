@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { COMPANY_INFO, FAQS } from '../data/mockData';
+import { getWhatsAppUrl } from '../utils/whatsapp';
 import {
   MapPin,
   Phone,
@@ -25,12 +26,22 @@ export const ContactPage: React.FC = () => {
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [inquiryWhatsAppUrl, setInquiryWhatsAppUrl] = useState('');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setInquiryWhatsAppUrl(
+      getWhatsAppUrl([
+        `Production inquiry: ${formData.subject}`,
+        `Name: ${formData.name}`,
+        `Email: ${formData.email}`,
+        `Phone: ${formData.phone || 'Not provided'}`,
+        `Message: ${formData.message}`,
+      ].join('\n'))
+    );
     setSubmitted(true);
-    setSuccessNotification('Message transmitted to our Nairobi studio coordinator.');
+    setSuccessNotification('Your inquiry is ready to send. Open WhatsApp and tap Send to deliver it.');
   };
 
   return (
@@ -121,7 +132,7 @@ export const ContactPage: React.FC = () => {
                   {COMPANY_INFO.mpesaPaybill}
                 </p>
                 <p className="text-neutral-500 text-[11px]">
-                  Account: <span className="text-white font-semibold">Your Booking Ref #</span>
+                  Account: <span className="text-white font-semibold">{COMPANY_INFO.mpesaAccount}</span>
                 </p>
               </div>
 
@@ -141,10 +152,18 @@ export const ContactPage: React.FC = () => {
             {submitted ? (
               <div className="p-8 text-center space-y-3 bg-[#141414] rounded-xl border border-[#292929]">
                 <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
-                <h4 className="text-lg font-bold text-white">Inquiry Received</h4>
+                <h4 className="text-lg font-bold text-white">Your Inquiry Is Ready</h4>
                 <p className="text-xs text-neutral-400 max-w-md mx-auto">
-                  Thank you, {formData.name}. Our production coordinator will review your request and reply to {formData.email} within 2 business hours.
+                  The inquiry has not been sent yet. Open WhatsApp below and tap Send to deliver it to Guru Creations.
                 </p>
+                <a
+                  href={inquiryWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex px-5 py-3 bg-[#128C7E] hover:bg-[#075E54] text-white text-xs font-semibold rounded-xl transition-colors"
+                >
+                  Send Inquiry via WhatsApp
+                </a>
                 <button
                   onClick={() => setSubmitted(false)}
                   className="mt-4 px-4 py-2 border border-[#333] hover:border-white text-xs text-neutral-200 rounded-xl cursor-pointer"

@@ -233,7 +233,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [projects, setProjects] = useState<ClientProject[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.PROJECTS);
-      return saved ? JSON.parse(saved) : INITIAL_PROJECTS;
+      if (!saved) return INITIAL_PROJECTS;
+
+      const savedProjects: ClientProject[] = JSON.parse(saved);
+      const sampleBlueprint = INITIAL_PROJECTS[0].deliverables[0];
+      return savedProjects.map((project) =>
+        project.id === INITIAL_PROJECTS[0].id
+          ? {
+              ...project,
+              deliverables: project.deliverables.map((deliverable) =>
+                deliverable.id === sampleBlueprint.id && deliverable.downloadUrl === '#'
+                  ? sampleBlueprint
+                  : deliverable
+              ),
+            }
+          : project
+      );
     } catch {
       return INITIAL_PROJECTS;
     }
@@ -347,7 +362,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
     setProjects((prev) => [newProject, ...prev]);
 
-    setSuccessNotification(`Booking request submitted! Your booking reference is ${ref}.`);
+    setSuccessNotification(`Booking details saved in this browser. Send the request via WhatsApp to contact Guru Creations. Reference: ${ref}.`);
     return newBooking;
   };
 
@@ -429,7 +444,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const addQuotation = (quote: Quotation) => {
     setQuotations((prev) => [quote, ...prev]);
-    setSuccessNotification(`Quotation #${quote.quoteNumber} created successfully.`);
+    setSuccessNotification(`Estimate #${quote.quoteNumber} saved in this browser. Contact Guru Creations to confirm the final quote.`);
   };
 
   const openMpesaModal = (payment: MpesaPaymentState) => {

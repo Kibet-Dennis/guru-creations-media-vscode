@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -12,7 +12,6 @@ import { PortfolioSection } from './components/PortfolioSection';
 import { YouTubeChannelSection } from './components/YouTubeChannelSection';
 import { HomeRevenueTeaser } from './components/HomeRevenueTeaser';
 import { ProductionProcess } from './components/ProductionProcess';
-import { OriginalPricingSection } from './components/OriginalPricingSection';
 import { ConsultationSection } from './components/ConsultationSection';
 import { TeamSection } from './components/TeamSection';
 import { HomeBlogTeaser } from './components/HomeBlogTeaser';
@@ -21,8 +20,6 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { CookieBanner } from './components/CookieBanner';
 import { ShowreelModal } from './components/ShowreelModal';
 import { MpesaModal } from './components/MpesaModal';
-import { CartDrawer } from './components/CartDrawer';
-import { InstantCheckoutModal } from './components/InstantCheckoutModal';
 
 // Dedicated Pages
 import { WhoWeArePage } from './pages/WhoWeArePage';
@@ -37,7 +34,6 @@ import { EquipmentPage } from './pages/EquipmentPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsOfServicePage } from './pages/TermsOfServicePage';
 import { ContactPage } from './pages/ContactPage';
-import { StorePage } from './pages/StorePage';
 
 import { TESTIMONIALS } from './data/mockData';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
@@ -48,11 +44,7 @@ const MainContent: React.FC = () => {
     setCurrentView,
     successNotification,
     setSuccessNotification,
-    activeCheckoutProduct,
-    setActiveCheckoutProduct,
   } = useApp();
-
-  const [isCartCheckoutOpen, setIsCartCheckoutOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#080808] text-white selection:bg-[#ff7b00] selection:text-black">
@@ -90,7 +82,6 @@ const MainContent: React.FC = () => {
             <YouTubeChannelSection />
             <HomeRevenueTeaser />
             <ProductionProcess />
-            <OriginalPricingSection />
             <ConsultationSection />
             <TeamSection />
             <HomeBlogTeaser />
@@ -143,7 +134,7 @@ const MainContent: React.FC = () => {
                   Let’s Bring Your Vision To Life
                 </h2>
                 <p className="text-sm sm:text-base text-neutral-400 max-w-2xl mx-auto leading-relaxed">
-                  Reserve your camera crew, sound engineers, and bonded broadcast switcher today. Transparent quotations, M-Pesa integrated deposits, and world-class storytelling.
+                  Reserve your camera crew, sound engineers, and bonded broadcast switcher today. Get a transparent quote and pay deposits manually by M-Pesa after your booking is confirmed.
                 </p>
 
                 <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
@@ -155,29 +146,10 @@ const MainContent: React.FC = () => {
                     <ArrowRight className="w-4 h-4" />
                   </button>
 
-                  <button
-                    onClick={() => setCurrentView('store')}
-                    className="px-6 py-3.5 bg-[#141418] hover:bg-[#1f1f26] border border-[#2e2e3e] hover:border-[#ff7b00] text-white font-medium text-xs rounded-xl transition-all cursor-pointer flex items-center gap-2"
-                  >
-                    <span>Creator Store & LUTs</span>
-                  </button>
                 </div>
               </div>
             </section>
           </>
-        )}
-
-        {currentView === 'store' && (
-          <StorePage onDirectCheckout={(p) => setActiveCheckoutProduct(p)} />
-        )}
-        {currentView === 'gear-hire' && (
-          <StorePage onDirectCheckout={(p) => setActiveCheckoutProduct(p)} />
-        )}
-        {currentView === 'academy' && (
-          <StorePage onDirectCheckout={(p) => setActiveCheckoutProduct(p)} />
-        )}
-        {currentView === 'sponsorship' && (
-          <StorePage onDirectCheckout={(p) => setActiveCheckoutProduct(p)} />
         )}
 
         {currentView === 'about' && <WhoWeArePage />}
@@ -200,20 +172,6 @@ const MainContent: React.FC = () => {
       {/* Global Modals */}
       <ShowreelModal />
       <MpesaModal />
-
-      {/* Slide-over Cart Drawer */}
-      <CartDrawer onCheckout={() => setIsCartCheckoutOpen(true)} />
-
-      {/* Instant M-Pesa Checkout Modal */}
-      {(activeCheckoutProduct !== null || isCartCheckoutOpen) && (
-        <InstantCheckoutModal
-          directProduct={activeCheckoutProduct}
-          onClose={() => {
-            setActiveCheckoutProduct(null);
-            setIsCartCheckoutOpen(false);
-          }}
-        />
-      )}
 
       {/* Floating Helpers */}
       <FloatingWhatsApp />

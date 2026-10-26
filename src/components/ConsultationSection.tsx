@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Send, CheckCircle2 } from 'lucide-react';
+import { getWhatsAppUrl } from '../utils/whatsapp';
 
 export const ConsultationSection: React.FC = () => {
   const { setSuccessNotification } = useApp();
@@ -11,13 +12,23 @@ export const ConsultationSection: React.FC = () => {
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [consultationWhatsAppUrl, setConsultationWhatsAppUrl] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
+    setConsultationWhatsAppUrl(
+      getWhatsAppUrl([
+        'Consultation request',
+        `Name: ${formData.name}`,
+        `Email: ${formData.email}`,
+        `Organization: ${formData.company || 'Not provided'}`,
+        `Project brief: ${formData.message}`,
+      ].join('\n'))
+    );
     setSubmitted(true);
     setSuccessNotification(
-      `Thank you, ${formData.name}! Your consultation request has been submitted to Guru Creations Media.`
+      'Your consultation request is ready. Open WhatsApp and tap Send to deliver it.'
     );
   };
 
@@ -36,10 +47,18 @@ export const ConsultationSection: React.FC = () => {
         {submitted ? (
           <div className="text-center py-8 space-y-3 bg-white/5 rounded-2xl border border-white/10">
             <CheckCircle2 className="w-12 h-12 text-[#ff7b00] mx-auto animate-bounce" />
-            <h3 className="text-xl font-bold text-white">Request Received</h3>
+            <h3 className="text-xl font-bold text-white">Your Request Is Ready</h3>
             <p className="text-xs text-neutral-300 max-w-md mx-auto">
-              Our lead creative director will review your brief and schedule your consultation session shortly.
+              It has not been sent yet. Open WhatsApp below and tap Send to deliver your request.
             </p>
+            <a
+              href={consultationWhatsAppUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex px-5 py-3 bg-[#128C7E] hover:bg-[#075E54] text-white text-xs font-semibold rounded-xl transition-colors"
+            >
+              Send Consultation via WhatsApp
+            </a>
             <button
               onClick={() => {
                 setSubmitted(false);

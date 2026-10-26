@@ -461,7 +461,7 @@ export const AdminDashboard: React.FC = () => {
                         {inv.status !== 'Paid' && (
                           <button
                             onClick={() => {
-                              const code = prompt('Enter Safaricom M-Pesa Receipt Code:', 'TK84HD92X1');
+                              const code = prompt('Enter the verified Safaricom M-Pesa receipt code:');
                               if (code) markInvoicePaid(inv.id, code, 'M-Pesa');
                             }}
                             className="px-3 py-1.5 bg-[#00A859] hover:bg-[#00924d] text-white rounded text-xs font-semibold cursor-pointer"

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Menu, X, Globe, User, PhoneCall, ShoppingBag } from 'lucide-react';
+import { Menu, X, Globe, User, PhoneCall } from 'lucide-react';
 import { COMPANY_INFO } from '../data/mockData';
 
 export const Navbar: React.FC = () => {
-  const { currentView, setCurrentView, currency, setCurrency, cartItemCount, setIsCartDrawerOpen } = useApp();
+  const { currentView, setCurrentView, currency, setCurrency } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -60,7 +60,7 @@ export const Navbar: React.FC = () => {
 
       {/* Main Header strictly adhering to the Top Bar Contract */}
       <header className="sticky top-0 z-40 w-full bg-[#080808]/95 backdrop-blur-md border-b border-[#1b1b1b]">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-8 px-4 sm:px-8 py-3.5">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 sm:gap-8 px-4 sm:px-8 py-3.5">
           {/* Zone 1: Single text element wordmark */}
           <button
             onClick={() => setCurrentView('home')}
@@ -69,11 +69,12 @@ export const Navbar: React.FC = () => {
             <span className="w-7 h-7 rounded bg-gradient-to-br from-[#D4AF37] to-[#8C7018] text-black font-extrabold flex items-center justify-center text-sm shadow-sm">
               G
             </span>
-            <span className="tracking-wider uppercase font-semibold">GURU CREATIONS</span>
+            <span className="tracking-wider uppercase font-semibold sm:hidden">GURU</span>
+            <span className="tracking-wider uppercase font-semibold hidden sm:inline">GURU CREATIONS</span>
           </button>
 
           {/* Zone 2: clean single-line text navigation links */}
-          <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-neutral-300">
+          <nav className="hidden xl:flex items-center gap-6 text-sm font-medium text-neutral-300">
             <button
               onClick={() => setCurrentView('about')}
               className={`whitespace-nowrap shrink-0 hover:text-white transition-colors cursor-pointer ${
@@ -129,17 +130,6 @@ export const Navbar: React.FC = () => {
               Pricing
             </button>
             <button
-              onClick={() => setCurrentView('store')}
-              className={`whitespace-nowrap shrink-0 hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 ${
-                currentView === 'store' ? 'text-[#ff7b00] font-semibold' : ''
-              }`}
-            >
-              <span>Store</span>
-              <span className="text-[10px] bg-gradient-to-r from-[#ff7b00] to-[#ff2e63] text-white px-1.5 py-0.2 rounded font-bold font-mono">
-                SHOP
-              </span>
-            </button>
-            <button
               onClick={() => setCurrentView('contact')}
               className={`whitespace-nowrap shrink-0 hover:text-white transition-colors cursor-pointer ${
                 currentView === 'contact' ? 'text-[#ff7b00] font-semibold' : ''
@@ -149,26 +139,11 @@ export const Navbar: React.FC = () => {
             </button>
           </nav>
 
-          {/* Zone 3: 1 primary action + Cart */}
+          {/* Primary service actions */}
           <div className="flex items-center gap-3 shrink-0">
-            {/* Shopping Cart Trigger */}
-            <button
-              onClick={() => setIsCartDrawerOpen(true)}
-              className="relative p-2.5 rounded-xl bg-[#14141c] border border-[#2a2a3c] hover:border-[#ff7b00] text-neutral-300 hover:text-white cursor-pointer transition-all group"
-              title="View Shopping Cart"
-              aria-label="View Shopping Cart"
-            >
-              <ShoppingBag className="w-4 h-4 text-[#ff7b00] group-hover:scale-110 transition-transform" />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gradient-to-r from-[#ff7b00] to-[#ff2e63] text-white text-[10px] font-bold flex items-center justify-center font-mono shadow-md animate-pulse">
-                  {cartItemCount}
-                </span>
-              )}
-            </button>
-
             <button
               onClick={() => setCurrentView('quotation')}
-              className="hidden sm:inline-flex px-3.5 py-1.5 text-xs font-medium text-neutral-300 border border-[#2b2b2b] rounded-lg hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="hidden sm:inline-flex lg:hidden px-3.5 py-1.5 text-xs font-medium text-neutral-300 border border-[#2b2b2b] rounded-lg hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
               Instant Quote
             </button>
@@ -182,7 +157,7 @@ export const Navbar: React.FC = () => {
             {/* Mobile menu trigger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-neutral-400 hover:text-white focus:outline-none cursor-pointer"
+              className="xl:hidden p-2 text-neutral-400 hover:text-white focus:outline-none cursor-pointer"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -192,18 +167,8 @@ export const Navbar: React.FC = () => {
 
         {/* Mobile Dropdown Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-[#0c0c0c] border-b border-[#222] px-6 py-4 space-y-3">
+          <div className="xl:hidden bg-[#0c0c0c] border-b border-[#222] px-6 py-4 space-y-3">
             <div className="grid grid-cols-2 gap-2 text-sm font-medium">
-              <button
-                onClick={() => {
-                  setCurrentView('store');
-                  setMobileMenuOpen(false);
-                }}
-                className="text-left py-2 px-3 rounded hover:bg-[#181818] text-[#ff7b00] font-bold flex items-center justify-between"
-              >
-                <span>Creator Store</span>
-                <span className="text-[10px] bg-[#ff7b00]/20 text-[#ff7b00] px-1 rounded">HOT</span>
-              </button>
               <button
                 onClick={() => {
                   setCurrentView('services');

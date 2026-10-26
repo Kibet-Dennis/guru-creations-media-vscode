@@ -1,0 +1,6 @@
+{
+  "name": "Guru Creations - Media & Production",
+  "description": "Guru Creations Ltd & Guru Media Production - Premium digital media production, aerial cinematography, documentary filmmaking, videography, photography, and live broadcasting in Nairobi, Kenya.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

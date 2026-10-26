@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101114">
+  <meta name="description" content="Ideas, practical tips and creative strategies from Guru Creations Media.">
+  <title>Journal | Guru Creations Media</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="CSS/blog1.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg journal-nav">
+    <div class="container">
+      <a class="navbar-brand" href="index.html"><span class="brand-mark">G</span> Guru Creations</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#journalNav" aria-controls="journalNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="journalNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="PORTFOLIO.HTML">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link active" href="blog1.html" aria-current="page">Journal</a></li>
+          <li class="nav-item ms-lg-3"><a class="nav-cta" href="index.html#contact">Let’s talk <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="journal-hero">
+    <div class="container hero-inner">
+      <p class="eyebrow"><span></span> THE GURU JOURNAL</p>
+      <h1>Ideas that move<br><span>your brand forward.</span></h1>
+      <p class="hero-copy">Fresh thinking on content, creativity and building a digital presence that means something.</p>
+      <a class="hero-link" href="#latest">Explore the latest <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
+      <div class="hero-orbit" aria-hidden="true"><span>G</span></div>
+    </div>
+  </header>
+
+  <main id="latest" class="journal-main">
+    <section class="container journal-content" aria-labelledby="latest-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">THOUGHTS & PERSPECTIVES</p>
+          <h2 id="latest-heading">The latest stories<span>.</span></h2>
+        </div>
+        <p class="section-note">Useful ideas. No noise.</p>
+      </div>
+
+      <div class="search-filter">
+        <label class="search-box" for="search">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input type="search" id="search" placeholder="Search stories..." autocomplete="off">
+        </label>
+        <label class="category-box" for="category-filter">
+          <span>Explore by</span>
+          <select id="category-filter" aria-label="Filter stories by category">
+            <option value="all">All topics</option>
+          </select>
+        </label>
+      </div>
+
+      <p class="results-count" id="results-count" aria-live="polite"></p>
+      <div class="row g-4" id="blog-posts" aria-live="polite">
+        <div class="col-12"><p class="loading-message"><i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i> Gathering fresh stories...</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <p class="modal-eyebrow" id="postModalCategory"></p>
+            <h2 class="modal-title" id="postModalLabel"></h2>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="postModalBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="journal-footer">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <a class="navbar-brand" href="index.html"><span class="brand-mark">G</span> Guru Creations</a>
+      <p>Creative thinking for a world that keeps moving.</p>
+      <span>&copy; 2026 Guru Creations Media</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="JS/blog1.js"></script>
+</body>
+</html>
